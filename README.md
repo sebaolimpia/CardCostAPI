@@ -102,7 +102,7 @@ spring:
 
 The above values are set in:
 
-            `src/main/resources/application-prod.yml`
+`src/main/resources/application-prod.yml`
 
 ### 3.2 H2
 For execute integration tests, we use H2 database.
@@ -119,12 +119,12 @@ You can access to H2 following these steps:
 
 The above values are set in:
 
-            `src/main/resources/application-integration_test.yml`
+`src/main/resources/application-integration_test.yml`
 
 If everything went well, it means that the tables have been generated in the local database with preloaded data.
 This data is located in:
 
-            `src/main/resources/data-integration_test.sql`
+`src/main/resources/data-integration_test.sql`
 
 ---
 
@@ -421,24 +421,26 @@ manually tests classes.
 As said previously, the integration tests use the H2 database. On the other hand, the unit tests use Mockito for mocking
 the dependencies.
 
-Also, was developed a performance test to check the method GET application performance,
+Also, was developed a performance test to check a GET method application performance,
 for concurrent 7000 Request Per Minute (RPM).
 
-In relation with the above, for the objective of having a better performance and high availability, the application
+About the above, for the goal of having a better performance and high availability, the application
 was developed using an In-Memory Caching Caffeine Cache provider.
 
-For the reality of the application, this is a good approach because offers better performance, memory management,
-and flexibility even for small, static datasets. Also, if the application will start to grow, it is more scalable
+For the reality of the application, this is a good approach because it offers better performance, memory management,
+and flexibility even for small, static datasets. Also, if the application will start to grow, it's more scalable
 than default cache (ConcurrentMapCacheManager) and is more efficient than other providers like Redis.
 
-To justify the use of cache, performance tests were performed using JMeter, for the listCardCost (GET) and
-updateCardCost (PUT) methods.
+To justify the use of cache, performance tests also were performed using JMeter, for `listCardCost` (GET) and
+`updateCardCost` (PUT) methods.
 Below is the result of each method without using cache:
+
 ![listCardCostWithoutCache.png](docs/images/listCardCostWithoutCache.png)
 
 ![updateCardCostWithoutCache.png](docs/images/updateCardCostWithoutCache.png)
 
-Here the results of each method using cache:
+Here are the results of each method using cache:
+
 ![listCardCostWithCache.png](docs/images/listCardCostWithCache.png)
 
 ![updateCardCostWithCache.png](docs/images/updateCardCostWithCache.png)
