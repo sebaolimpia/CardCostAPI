@@ -1,0 +1,1375 @@
+{
+	"info": {
+		"_postman_id": "820a52ee-4a9f-4d64-8ae6-760579fc8803",
+		"name": "Etraveli-Group",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36606269"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Log in",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Parse the response body to get the JSON object",
+									"let responseData = pm.response.json();",
+									"",
+									"// Check if the token exists in the response",
+									"if (responseData && responseData.token) {",
+									"    // Set the bearer_token variable in the collection",
+									"    pm.collectionVariables.set(\"bearer_token\", responseData.token);",
+									"    console.log(\"Bearer token saved: \" + responseData.token);",
+									"} else {",
+									"    console.error(\"Token not found in the response.\");",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{etraveli_group_base_url}}/auth/login",
+							"host": [
+								"{{etraveli_group_base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user_1\",\n    \"password\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{etraveli_group_base_url}}/auth/signup",
+							"host": [
+								"{{etraveli_group_base_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "API Key",
+					"item": [
+						{
+							"name": "CreateAdministrator Unauthorized",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_key}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin_1\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{etraveli_group_base_url}}/users/admin",
+									"host": [
+										"{{etraveli_group_base_url}}"
+									],
+									"path": [
+										"users",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllUsers Unauthorized",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-api-key",
+										"value": "{{api_key}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{etraveli_group_base_url}}/users/all",
+									"host": [
+										"{{etraveli_group_base_url}}"
+									],
+									"path": [
+										"users",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "JWT",
+					"item": [
+						{
+							"name": "CreateAdministrator",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{bearer_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin_1\",\n    \"password\": \"123456\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{etraveli_group_base_url}}/users/admin",
+									"host": [
+										"{{etraveli_group_base_url}}"
+									],
+									"path": [
+										"users",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetAllUsers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{bearer_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{etraveli_group_base_url}}/users/all",
+									"host": [
+										"{{etraveli_group_base_url}}"
+									],
+									"path": [
+										"users",
+										"all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Card Cost",
+			"item": [
+				{
+					"name": "addCardCost",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "addCardCost Unauthorized",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"card_number\": 4218210123456789\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "addCardCost Ok",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"card_number\": 4218210123456789\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addCardCost SevenDigitsCardNumber",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"card_number\": 1234567\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addCardCost TwentyDigitsCardNumber",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"card_number\": 12345678912345678912\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addCardCost EmptyCardNumber",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"card_number\": \"\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addCardCost NullCardNumber",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "listCardCost",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "listCardCosts Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/all",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "listCardCosts Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/all",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "findCardCostById",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "findCardCostById Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "findCardCostById Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostById NotFound",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/10001",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"10001"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostById NonPositive",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/0",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"0"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "findCardCostByCountry",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "findCardCostByCountry Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=us",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": "us"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "findCardCostByCountry Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=us",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": "us"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostByCountry NotFound",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=XX",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": "XX"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostByCountry WithoutLetters",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostByCountry OneLetter",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=u",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": "u"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostByCountry MoreThanTwoLetters",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/country?country=uss",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"country"
+											],
+											"query": [
+												{
+													"key": "country",
+													"value": "uss"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "findCardCostByCost",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "findCardCostByCost Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/cost?cost=5",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"cost"
+											],
+											"query": [
+												{
+													"key": "cost",
+													"value": "5"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "findCardCostByCost Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/cost?cost=5",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"cost"
+											],
+											"query": [
+												{
+													"key": "cost",
+													"value": "5"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findCardCostByCost NonPositive",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/cost?cost=-1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"cost"
+											],
+											"query": [
+												{
+													"key": "cost",
+													"value": "-1"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "updateCardCost",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "updateCardCost Unauthorized",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"us\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/5",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"5"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "updateCardCost Ok",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"us\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/5",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"5"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost NonPositive",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"US\",\n    \"cost\": 10.75\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/0",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost NullCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"cost\": 10.75\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost NullCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"US\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost NullCountryAndCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost OneLetterCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"U\",\n    \"cost\": 10.75\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost MoreThanTwoLettersCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"USS\",\n    \"cost\": 10.75\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost NonPositiveCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"US\",\n    \"cost\": -1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateCardCost OneLetterCountryAndNonPositiveCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\": \"U\",\n    \"cost\": -1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "deleteCardCost",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "deleteCardCost Unauthorized",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "deleteCardCost Ok",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteCardCost NotFound",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/1000",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"1000"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteCardCost NonPositive",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/0",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"0"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "etraveli_group_base_url",
+			"value": "http://localhost:8080/payment-cards-cost"
+		},
+		{
+			"key": "bearer_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "api_key",
+			"value": "",
+			"type": "string"
+		}
+	]
+}

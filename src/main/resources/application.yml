@@ -1,0 +1,8 @@
+spring:
+  profiles:
+    active: ${SCOPE_SUFFIX}
+  app:
+    jwt:
+      key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b # Secret key used to sign JWT tokens, should be rotated regularly
+      expiration-time: 600000 # Token expiration time in milliseconds
+    api-key: abcdef123456 # API key used to authenticate internal API requests, should be rotated regularly
