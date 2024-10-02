@@ -40,7 +40,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             UsernameNotFoundException.class
     })
     public ResponseEntity<ApiErrorDto> handleAuthenticationRequest(Exception ex) {
-        log.warn("Executing authentication request exception handler (REST)");
+        log.warn("Executing authentication request exception handler (REST) - {}", ex.getClass().getSimpleName());
         ApiErrorDto apiError = ApiErrorDto.builder()
                 .error(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
@@ -61,7 +61,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             org.springframework.security.access.AccessDeniedException.class
     })
     public ResponseEntity<ApiErrorDto> handleUnAuthorizedRequest(Exception ex) {
-        log.warn("Executing unauthorized request exception handler (REST)");
+        log.warn("Executing unauthorized request exception handler (REST) - {}", ex.getClass().getSimpleName());
         ApiErrorDto apiError = ApiErrorDto.builder()
                 .error(UnauthorizedException.class.getSimpleName())
                 .message(EXCEPTION_UNAUTHORIZED)
@@ -85,7 +85,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             JsonProcessingException.class
     })
     public ResponseEntity<ApiErrorDto> handleBadRequest(Exception ex) {
-        log.warn(LOG_ERROR_EXECUTING_BAD_REQUEST_EXCEPTION_HANDLER_REST);
+        log.warn(LOG_ERROR_EXECUTING_BAD_REQUEST_EXCEPTION_HANDLER_REST + " - {}", ex.getClass().getSimpleName());
         ApiErrorDto apiError = ApiErrorDto.builder()
                 .error(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
@@ -103,7 +103,7 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             NotFoundException.class
     })
     public ResponseEntity<ApiErrorDto> handleNotFoundRequest(NotFoundException ex) {
-        log.warn(LOG_ERROR_EXECUTING_NOT_FOUND_EXCEPTION_HANDLER_REST);
+        log.warn(LOG_ERROR_EXECUTING_NOT_FOUND_EXCEPTION_HANDLER_REST + " - {}", ex.getClass().getSimpleName());
         ApiErrorDto apiError = ApiErrorDto.builder()
                 .error(ex.getClass().getSimpleName())
                 .message(ex.getMessage())
@@ -121,7 +121,8 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             ConstraintViolationException.class
     })
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-        log.warn(LOG_ERROR_EXECUTING_METHOD_ARGUMENT_NOT_VALID_EXCEPTION_HANDLER_REST);
+        log.warn(LOG_ERROR_EXECUTING_METHOD_ARGUMENT_NOT_VALID_EXCEPTION_HANDLER_REST + " - {}",
+                ex.getClass().getSimpleName());
         List<ApiErrorDto> apiError = ex.getConstraintViolations()
                 .stream()
                 .map(constraintViolation -> ApiErrorDto.builder()
@@ -147,7 +148,8 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
             @NonNull HttpHeaders headers,
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
-        log.warn(LOG_ERROR_EXECUTING_METHOD_ARGUMENT_NOT_VALID_EXCEPTION_HANDLER_REST);
+        log.warn(LOG_ERROR_EXECUTING_METHOD_ARGUMENT_NOT_VALID_EXCEPTION_HANDLER_REST + " - {}",
+                ex.getClass().getSimpleName());
         List<ApiErrorDto> apiError = ex.getBindingResult().getFieldErrors()
                 .stream()
                 .map(this::mapError)

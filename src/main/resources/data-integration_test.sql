@@ -1,3 +1,5 @@
+INSERT INTO `bin_info` (`bin`, `cost`, `country`) VALUES ('421821', '10.0', 'UY');
+
 INSERT INTO `card_cost` (`cost`, `country`) VALUES ('5.0', 'US');
 
 INSERT INTO `role` (`description`, `name`) VALUES ('ADMINISTRATOR ROLE', 'ADMIN');

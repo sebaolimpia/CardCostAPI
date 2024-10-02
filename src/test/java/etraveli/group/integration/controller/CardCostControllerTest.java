@@ -60,7 +60,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_DOES_NOT_EXIST, GET, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_NOT_FOUND, GET, requestEntity, String.class);
 
         // THEN
         assertEquals(NOT_FOUND, responseEntity.getStatusCode());
@@ -77,7 +77,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_NON_POSITIVE, GET, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_NON_POSITIVE, GET, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
@@ -97,7 +97,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, GET, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, GET, requestEntity, String.class);
 
         // THEN
         assertEquals(OK, responseEntity.getStatusCode());
@@ -241,79 +241,12 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_NON_POSITIVE, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_NON_POSITIVE, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         assertEquals(ERROR_CARD_COST_CONSTRAINT_VIOLATION_BY_ID, responseEntity.getBody());
-    }
-
-    @Test
-    @Order(13)
-    @DisplayName("Update card cost with null country.")
-    public void updateCardCostWithNullCountryTest() {
-        // GIVEN
-        CardCostDto requestDto = getCardCostDtoIntegrationTest();
-        requestDto.setCountry(null);
-
-        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
-
-        // WHEN
-        ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
-
-        // THEN
-        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
-        assertEquals(ERROR_CARD_COST_NULL_COUNTRY, responseEntity.getBody());
-    }
-
-    @Test
-    @Order(14)
-    @DisplayName("Update card cost with null cost.")
-    public void updateCardCostWithNullCostTest() {
-        // GIVEN
-        CardCostDto requestDto = getCardCostDtoIntegrationTest();
-        requestDto.setCost(null);
-
-        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
-
-        // WHEN
-        ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
-
-        // THEN
-        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
-        assertEquals(ERROR_CARD_COST_NULL_COST, responseEntity.getBody());
-    }
-
-    @Test
-    @Order(15)
-    @DisplayName("Update card cost with null country and cost.")
-    public void updateCardCostWithNullCountryAndCostTest() throws JsonProcessingException {
-        // GIVEN
-        CardCostDto requestDto = getCardCostDtoIntegrationTest();
-        requestDto.setCountry(null);
-        requestDto.setCost(null);
-
-        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
-
-        // WHEN
-        ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
-
-        // THEN
-        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
-        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
-        var body = responseEntity.getBody();
-        assertNotNull(body);
-        var list = objectMapper.readValue(body, List.class);
-        var messagesExpectedPresents = body.matches(REGEX_CARD_COST_NULL_COUNTRY)
-                && body.matches(REGEX_CARD_COST_NULL_COST);
-        assertTrue(messagesExpectedPresents);
-        assertEquals(2, list.size());
     }
 
     @Test
@@ -328,7 +261,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
@@ -348,12 +281,32 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
         assertEquals(ERROR_CARD_COST_VIOLATION_FIELD_COUNTRY, responseEntity.getBody());
+    }
+
+    @Test
+    @Order(13)
+    @DisplayName("Update card cost with null country.")
+    public void updateCardCostWithNullCountryTest() {
+        // GIVEN
+        CardCostDto requestDto = getCardCostDtoIntegrationTest();
+        requestDto.setCountry(null);
+
+        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
+
+        // WHEN
+        ResponseEntity<String> responseEntity = testRestTemplate
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
+
+        // THEN
+        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        assertEquals(ERROR_NULL_COUNTRY, responseEntity.getBody());
     }
 
     @Test
@@ -368,12 +321,59 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
         assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
-        assertEquals(ERROR_CARD_COST_VIOLATION_FIELD_COST, responseEntity.getBody());
+        assertEquals(ERROR_VIOLATION_FIELD_COST, responseEntity.getBody());
+    }
+
+    @Test
+    @Order(14)
+    @DisplayName("Update card cost with null cost.")
+    public void updateCardCostWithNullCostTest() {
+        // GIVEN
+        CardCostDto requestDto = getCardCostDtoIntegrationTest();
+        requestDto.setCost(null);
+
+        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
+
+        // WHEN
+        ResponseEntity<String> responseEntity = testRestTemplate
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
+
+        // THEN
+        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        assertEquals(ERROR_NULL_COST, responseEntity.getBody());
+    }
+
+    @Test
+    @Order(15)
+    @DisplayName("Update card cost with null country and cost.")
+    public void updateCardCostWithNullCountryAndCostTest() throws JsonProcessingException {
+        // GIVEN
+        CardCostDto requestDto = getCardCostDtoIntegrationTest();
+        requestDto.setCountry(null);
+        requestDto.setCost(null);
+
+        var requestEntity = createRequestEntityWithAuthorizationToken(ADMIN, PASSWORD, requestDto, PUT);
+
+        // WHEN
+        ResponseEntity<String> responseEntity = testRestTemplate
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
+
+        // THEN
+        assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
+        assertEquals(APPLICATION_JSON, responseEntity.getHeaders().getContentType());
+        var body = responseEntity.getBody();
+        assertNotNull(body);
+        var list = objectMapper.readValue(body, List.class);
+        var messagesExpectedPresents = body.matches(REGEX_CARD_COST_NULL_COUNTRY)
+                && body.matches(REGEX_CARD_COST_NULL_COST);
+        assertTrue(messagesExpectedPresents);
+        assertEquals(2, list.size());
     }
 
     @Test
@@ -389,7 +389,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
@@ -397,8 +397,8 @@ public class CardCostControllerTest extends IntegrationTest {
         var body = responseEntity.getBody();
         assertNotNull(body);
         var list = objectMapper.readValue(body, List.class);
-        var messagesExpectedPresents = body.matches(REGEX_CARD_COST_LENGTH_COUNTRY)
-                && body.matches(REGEX_CARD_COST_POSITIVE_COST);
+        var messagesExpectedPresents = body.matches(REGEX_LENGTH_COUNTRY)
+                && body.matches(REGEX_POSITIVE_COST);
         assertTrue(messagesExpectedPresents);
         assertEquals(2, list.size());
     }
@@ -415,7 +415,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, PUT, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, PUT, requestEntity, String.class);
 
         // THEN
         assertEquals(OK, responseEntity.getStatusCode());
@@ -432,7 +432,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_DOES_NOT_EXIST, DELETE, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_NOT_FOUND, DELETE, requestEntity, String.class);
 
         // THEN
         assertEquals(NOT_FOUND, responseEntity.getStatusCode());
@@ -449,7 +449,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_NON_POSITIVE, DELETE, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_NON_POSITIVE, DELETE, requestEntity, String.class);
 
         // THEN
         assertEquals(BAD_REQUEST, responseEntity.getStatusCode());
@@ -468,7 +468,7 @@ public class CardCostControllerTest extends IntegrationTest {
 
         // WHEN
         ResponseEntity<String> responseEntity = testRestTemplate
-                .exchange(BASE_URL + URL_ID_CARD_COST_1, DELETE, requestEntity, String.class);
+                .exchange(BASE_URL + URL_ID_1, DELETE, requestEntity, String.class);
 
         // THEN
         assertEquals(OK, responseEntity.getStatusCode());

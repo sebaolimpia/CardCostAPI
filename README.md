@@ -17,20 +17,28 @@ It demonstrates the use of security, caching, JPA, and a layered architecture.
     - [3.1. MySQL](#31-MySQL)
     - [3.2. H2](#32-H2)
 - [4. Using the application](#4-Using-the-application)
-    - [4.1. Authentication](#41-Authentication)
-      - [4.1.1. Log in](#411-Log-in)
-      - [4.1.2. Sign up](#412-Sign-up)
-    - [4.2. Users](#42-Users)
-      - [4.2.1. Create administrator](#421-create-administrator)
-      - [4.2.2. Get all users](#422-Get-all-users)
-    - [4.3. Card Cost](#43-Card-Cost)
-      - [4.3.1. Create card cost](#431-Create-card-cost)
-      - [4.3.2. Read all card cost](#432-Read-all-card-cost)
-      - [4.3.3. Read card cost by identifier](#433-Read-card-cost-by-identifier)
-      - [4.3.4. Read card cost by country](#434-Read-card-cost-by-country)
-      - [4.3.5. Read card cost by cost](#435-Read-card-cost-by-cost)
-      - [4.3.6. Update card cost](#436-Update-card-cost)
-      - [4.3.7. Delete card cost](#437-Delete-card-cost)
+    - [4.1. Using Maven or IntelliJ IDEA](#41-Using-Maven-or-IntelliJ-IDEA)
+    - [4.2. Using Docker](#42-Using-Docker)
+    - [4.3. Authentication](#43-Authentication)
+      - [4.3.1. Log in](#431-Log-in)
+      - [4.3.2. Sign up](#432-Sign-up)
+    - [4.4. Users](#44-Users)
+      - [4.4.1. Create administrator](#441-create-administrator)
+      - [4.4.2. Get all users](#442-Get-all-users)
+    - [4.5. BIN info](#45-BIN-info)
+      - [4.5.1. Create BIN info](#451-Create-BIN-info)
+      - [4.5.2. Get all BIN info](#452-Get-all-BIN-info)
+      - [4.5.3. Get BIN info by BIN](#453-Get-BIN-info-by-BIN)
+      - [4.5.4. Update BIN info](#454-Update-BIN-info)
+      - [4.5.5. Delete BIN info](#455-Delete-BIN-info)
+    - [4.6. Card Cost](#46-Card-Cost)
+      - [4.6.1. Create card cost](#461-Create-card-cost)
+      - [4.6.2. Get all card cost](#462-Get-all-card-cost)
+      - [4.6.3. Get card cost by identifier](#463-Get-card-cost-by-identifier)
+      - [4.6.4. Get card cost by country](#464-Get-card-cost-by-country)
+      - [4.6.5. Get card cost by cost](#465-Get-card-cost-by-cost)
+      - [4.6.6. Update card cost](#466-Update-card-cost)
+      - [4.6.7. Delete card cost](#467-Delete-card-cost)
 - [5. Testing](#5-Testing)
 ---
 
@@ -39,7 +47,9 @@ For building and running the application you need the System Requirements descri
 
 Additionally, you need to install the following software:
 * [MySQL](https://dev.mysql.com/downloads/mysql/)
-* [Postman](https://www.postman.com/downloads/) 
+* [Postman](https://www.postman.com/downloads/)
+* [Docker](https://docs.docker.com/get-started/get-docker/)
+* [Docker Compose](https://docs.docker.com/compose/install/standalone/)
 
 ---
 
@@ -48,7 +58,8 @@ For running the application locally, you must set the following environment vari
 * ***SCOPE*** to specify the execution environment.
 * ***DB_HOST*** to specify the host where MySQL will be running.
 * ***DB_PORT*** to specify the port where MySQL will be running.
-* ***DB_NAME*** to specify the name of the MySQL database.
+* ***DB_NAME*** to specify the name of MySQL database.
+* ***DB_URL*** to specify the URL of MySQL database.
 * ***DB_USER*** to specify MySQL user.
 * ***DB_PASS*** to specify MySQL password.
 
@@ -62,6 +73,7 @@ $ export SCOPE="prod"
 $ export DB_HOST="localhost"
 $ export DB_PORT="3306"
 $ export DB_NAME="card_cost"
+$ export DB_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true"
 $ export DB_USER="USER_FOR_MY_SQL"
 $ export DB_PASSWORD="PASSWORD_FOR_MY_SQL"
 ```
@@ -90,7 +102,7 @@ The configuration already create the database and tables, so you don't need to c
 ```yml
 spring:
   datasource:
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
+    url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -135,16 +147,6 @@ so you must log in to interact with it. This approach was based on the interacti
 Also, the application has an API Key-Based Authorization. This approach was based on the interaction with internal applications.
 Users who can interact with this kind of authorization have the minimum privileges to follow the best practices.
 
-To run the Spring Boot application, you must execute the following command in the root directory of the project:
-```shell
-$ mvn spring-boot:run
-```
-
-Alternatively, you can run the application using IntelliJ IDEA. To do this, you must open the project and run
-the `CardCostApplication` class.
-
-In both cases, if everything goes well, the application will start running on http://localhost:8080.
-
 There are three types of users, from highest to lowest privilege:
 - ***SUPER ADMINISTRATOR***
 - ***ADMINISTRATOR***
@@ -160,10 +162,41 @@ Below is a list of the different endpoints and the roles required to access them
 
 **NOTES**:
 * All passwords are stored encrypted using BCryptPasswordEncoder.
+* Independent of the way to use the application, if everything goes well, the application will start running
+on http://localhost:8080.
 
-### 4.1. Authentication
+### 4.1. Using Maven or IntelliJ IDEA
+To run the Spring Boot application, you must execute the following command in the root directory of the project:
+```shell
+$ mvn spring-boot:run
+```
+
+Alternatively, you can run the application using IntelliJ IDEA. To do this, you must open the project and run
+the `CardCostApplication` class.
+
+### 4.2. Using Docker
+To run the Spring Boot application using Docker, you must execute the following command in the root directory of
+the project:
+```shell
+$ mvn clean package
+```
+This command generates the .jar file which will be used to create the server container.
+
+Then, in the same path, you must execute the following command:
+```shell
+$ sudo docker-compose build
+```
+This command creates images for use later by server and MySQL containers.
+
+Finally, you must execute the following command:
+```shell
+$ sudo docker-compose up
+```
+This command creates server and MySQL containers.
+
+### 4.3. Authentication
 This functionality handles user authentication logic.
-The application allows you to registration of new users and authentication of existing users.
+The application allows to you to registration of new users and authentication of existing users.
 
 The Postman collection included in `docs/postman/Etraveli-Group.postman_collection.json` has a folder called
 Authentication, in which there is a call to user log in request, and through a script in the scripts tab, set a
@@ -181,7 +214,7 @@ variable called `{{api_key}}` is used as a value of `x-api-key` header:
 
 ![SetApiKey.png](docs/images/SetApiKey.png)
 
-#### 4.1.1. Log in
+#### 4.3.1. Log in
 
 * **Verb:** `POST`
 
@@ -214,7 +247,7 @@ variable called `{{api_key}}` is used as a value of `x-api-key` header:
 }
 ```
 
-#### 4.1.2. Sign up
+#### 4.3.2. Sign up
 
 * **Verb:** `POST`
 
@@ -246,11 +279,11 @@ variable called `{{api_key}}` is used as a value of `x-api-key` header:
 }
 ```
 
-### 4.2. Users
-This functionality handles user logic. The application allows you to create
+### 4.4. Users
+This functionality handles user logic. The application allows to you to create
 a new administrator and list all existing users.
 
-#### 4.2.1. Create administrator
+#### 4.4.1. Create administrator
 
 * **Verb:** `POST`
 
@@ -282,7 +315,7 @@ a new administrator and list all existing users.
 }
 ```
 
-#### 4.2.2. Get all users
+#### 4.4.2. Get all users
 
 * **Verb:** `GET`
 
@@ -292,11 +325,110 @@ a new administrator and list all existing users.
 
 * **Required role user:** `SUPER_ADMIN` - `ADMIN`
 
-### 4.3. Card Cost
-This functionality handles card cost logic.
-The application allows you to perform CRUD operations on card costs.
+### 4.5. BIN info
+This functionality handles BIN info logic.
+The application allows to you to perform CRUD operations on BIN info and this information is using to avoid overload
+the external API call to https://lookup.binlist.net.
 
-#### 4.3.1. Create card cost
+#### 4.5.1. Create BIN info
+
+* **Verb:** `POST`
+
+* **Url:** `http://localhost:8080/payment-cards-cost/bin-info`
+
+* **Function:** Create new BIN info
+
+* **Required role user:** `ADMIN`
+
+* **Example Body:**
+```json
+{
+  "bin": 421821,
+  "country": "UY",
+  "cost": 10.0
+}
+```
+
+* **Example Response:**
+```json
+{
+  "bin": 421821,
+  "country": "UY",
+  "cost": 10.0
+}
+```
+
+#### 4.5.2. Get all BIN info
+
+* **Verb:** `GET`
+
+* **Url:** `http://localhost:8080/payment-cards-cost/bin-info/all`
+
+* **Function:** Return all the BINs info
+
+* **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
+
+#### 4.5.3. Get BIN info by BIN
+
+* **Verb:** `GET`
+
+* **Url:** `http://localhost:8080/payment-cards-cost/bin-info/{bin}`
+
+* **Function:** Return the BIN info by `bin` BIN
+
+* **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
+
+#### 4.5.4. Update BIN info
+
+* **Verb:** `PUT`
+
+* **Url:** `http://localhost:8080/payment-cards-cost/bin-info/{idBinInfo}`
+
+* **Function:** Update the BIN info by `idBinInfo` identifier
+
+* **Required role user:** `ADMIN`
+
+* **Example Body:**
+```json
+{
+  "bin": 421821,
+  "country": "UY",
+  "cost": 5.0
+}
+```
+
+* **Example Response:**
+```json
+{
+  "id": 1,
+  "bin": 421821,
+  "country": "UY",
+  "cost": 5.0
+}
+```
+
+#### 4.5.5. Delete BIN info
+
+* **Verb:** `DELETE`
+
+* **Url:** `http://localhost:8080/payment-cards-cost/bin-info{idBinInfo}`
+
+* **Function:** Delete the BIN info by `idBinInfo` identifier
+
+* **Required role user:** `ADMIN`
+
+* **Example Response:**
+```json
+{
+  "deleted": true
+}
+```
+
+### 4.6. Card Cost
+This functionality handles card cost logic.
+The application allows to you to perform CRUD operations on card costs.
+
+#### 4.6.1. Create card cost
 
 * **Verb:** `POST`
 
@@ -321,17 +453,17 @@ The application allows you to perform CRUD operations on card costs.
 }
 ```
 
-#### 4.3.2. Read all card cost
+#### 4.6.2. Get all card cost
 
 * **Verb:** `GET`
 
 * **Url:** `http://localhost:8080/payment-cards-cost/all`
 
-* **Function:** Return all card costs in the application
+* **Function:** Return all card costs
 
 * **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
 
-#### 4.3.3. Read card cost by identifier
+#### 4.6.3. Get card cost by identifier
 
 * **Verb:** `GET`
 
@@ -341,7 +473,7 @@ The application allows you to perform CRUD operations on card costs.
 
 * **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
 
-#### 4.3.4. Read card cost by country
+#### 4.6.4. Get card cost by country
 
 * **Verb:** `GET`
 
@@ -351,7 +483,7 @@ The application allows you to perform CRUD operations on card costs.
 
 * **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
 
-#### 4.3.5. Read card cost by cost
+#### 4.6.5. Get card cost by cost
 
 * **Verb:** `GET`
 
@@ -361,7 +493,7 @@ The application allows you to perform CRUD operations on card costs.
 
 * **Required role user:** `SUPER_ADMIN` - `ADMIN` - `USER`
 
-#### 4.3.6. Update card cost
+#### 4.6.6. Update card cost
 
 * **Verb:** `PUT`
 
@@ -387,7 +519,7 @@ The application allows you to perform CRUD operations on card costs.
 }
 ```
 
-#### 4.3.7. Delete card cost
+#### 4.6.7. Delete card cost
 
 * **Verb:** `DELETE`
 

@@ -1,12 +1,12 @@
 package etraveli.group.service.impl;
 
 import static etraveli.group.common.Constants.*;
-import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
 import static org.springframework.http.HttpMethod.GET;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import etraveli.group.dto.BinInfoDto;
 import etraveli.group.dto.request.CardNumberDto;
 import etraveli.group.dto.CardCostDto;
 import etraveli.group.dto.response.CardCostListByCostDto;
@@ -15,13 +15,13 @@ import etraveli.group.exception.BadRequestException;
 import etraveli.group.exception.NotFoundException;
 import etraveli.group.model.CardCost;
 import etraveli.group.repository.ICardCostRepository;
+import etraveli.group.service.IBinInfoService;
 import etraveli.group.service.ICardCostService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,15 +37,25 @@ public class CardCostService implements ICardCostService {
 
     private final ICardCostRepository cardCostRepository;
 
+    private final IBinInfoService binInfoService;
+
     private final ModelMapper modelMapper;
 
     private final ObjectMapper objectMapper;
 
+    private final RestTemplate restTemplate;
+
     @Autowired
-    public CardCostService(ICardCostRepository cardCostRepository, ModelMapper modelMapper, ObjectMapper objectMapper) {
+    public CardCostService(ICardCostRepository cardCostRepository,
+                           IBinInfoService binInfoService,
+                           ModelMapper modelMapper,
+                           ObjectMapper objectMapper,
+                           RestTemplate restTemplate) {
         this.cardCostRepository = cardCostRepository;
+        this.binInfoService = binInfoService;
         this.modelMapper = modelMapper;
         this.objectMapper = objectMapper;
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -58,24 +68,43 @@ public class CardCostService implements ICardCostService {
     public CardCostDto addCardCost(CardNumberDto cardNumberDto) throws JsonProcessingException {
         String cardNumber = String.valueOf(cardNumberDto.getCardNumber());
         Integer bin = Integer.valueOf(cardNumber.substring(0, 6));
-        ResponseEntity<String> response = getStringResponseEntity(bin);
-        JsonNode rootNode = objectMapper.readTree(response.getBody());
-        String country = rootNode.get("country").get("alpha2").asText();
-        if (country == null || country.length() != 2) {
-            throw new BadRequestException(VALIDATION_COUNTRY_CODE_API_CALL_MUST_BE_EXACTLY_2_CHARACTERS_LONG);
+        // Check if the BIN-country relation already exists.
+        BinInfoDto binInfoDto = binInfoService.findBinInfoByBin(bin);
+        if (binInfoDto != null) {
+            return CardCostDto.builder()
+                .country(binInfoDto.getCountry())
+                .cost(binInfoDto.getCost())
+                .build();
         }
+        String countryInUpperCase = getCountryFromResponseEntity(bin);
 
-        // Avoid messages that include information of database DataIntegrityViolationException.
-        if (cardCostRepository.findByCountry(country).isPresent()) {
-            throw new BadRequestException(String.format(EXCEPTION_ALREADY_EXIST_CARD_COST_WITH_COUNTRY, country));
+        // The country already has a card cost, but the BIN info isn't present.
+        CardCost cardCost = cardCostRepository.findByCountry(countryInUpperCase).orElse(null);
+        if (cardCost != null) {
+            // Before to return the card cost, we add the BIN info to avoid future calls to the external API.
+            binInfoService.addBinInfo(BinInfoDto.builder()
+                    .bin(bin)
+                    .country(countryInUpperCase)
+                    .cost(cardCost.getCost())
+                    .build());
+            return CardCostDto.builder()
+                .country(cardCost.getCountry())
+                .cost(cardCost.getCost())
+                .build();
         }
 
         CardCostDto cardCostDto = CardCostDto.builder()
-            // The country code must be in uppercase.
-            .country(country.toUpperCase(Locale.ROOT))
-            .cost(getCostByCountryCode(country))
+            .country(countryInUpperCase)
+            .cost(10.0)
             .build();
         cardCostRepository.save(modelMapper.map(cardCostDto, CardCost.class));
+
+        // After add the card cost, we add the BIN info to avoid future calls to the external API.
+        binInfoService.addBinInfo(BinInfoDto.builder()
+            .bin(bin)
+            .country(cardCostDto.getCountry())
+            .cost(cardCostDto.getCost())
+            .build());
         return cardCostDto;
     }
 
@@ -144,6 +173,7 @@ public class CardCostService implements ICardCostService {
 
     /**
      * Update card cost.
+     * @param idCardCost Card cost id.
      * @param cardCostDto Card cost update.
      * @return Card cost updated.
      */
@@ -179,7 +209,7 @@ public class CardCostService implements ICardCostService {
         return cardCost;
     }
 
-    private ResponseEntity<String> getStringResponseEntity(Integer bin) {
+    private String getCountryFromResponseEntity(Integer bin) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Version", "3");
 
@@ -187,19 +217,24 @@ public class CardCostService implements ICardCostService {
 
         String url = String.format(BIN_LIST_URL, bin);
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(url, GET, requestEntity, String.class);
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new NotFoundException(String.format(EXCEPTION_NOT_FOUND_COUNTRY_WITH_BIN, bin));
         }
-        return response;
-    }
 
-    private Double getCostByCountryCode(String country) {
-        return switch (country) {
-            case "US" -> 5.0;
-            case "GR" -> 15.0;
-            default -> 10.0;
-        };
+        JsonNode rootNode = objectMapper.readTree(response.getBody());
+        JsonNode countryJsonNode = rootNode.get("country");
+        if (countryJsonNode == null) {
+            throw new NotFoundException(EXCEPTION_NOT_FOUND_COUNTRY_FROM_EXTERNAL_API_CALL);
+        }
+        JsonNode alpha2JsonNode = countryJsonNode.get("alpha2");
+        if (alpha2JsonNode == null) {
+            throw new NotFoundException(EXCEPTION_NOT_FOUND_COUNTRY_FROM_EXTERNAL_API_CALL);
+        }
+        String country = alpha2JsonNode.asText();
+        if (country.length() != 2) {
+            throw new BadRequestException(VALIDATION_COUNTRY_CODE_API_CALL_MUST_BE_EXACTLY_2_CHARACTERS_LONG);
+        }
+        return country.toUpperCase(Locale.ROOT);
     }
 }
