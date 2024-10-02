@@ -48,7 +48,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"superadmin\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"username\": \"admin_2\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -87,7 +87,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"user_1\",\n    \"password\": \"123456\"\n}",
+							"raw": "{\n    \"username\": \"admin_1\",\n    \"password\": \"123456\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -190,7 +190,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"username\": \"admin_1\",\n    \"password\": \"123456\"\n}",
+									"raw": "{\n    \"username\": \"admin_2\",\n    \"password\": \"123456\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -233,6 +233,1114 @@
 								}
 							},
 							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "BIN info",
+			"item": [
+				{
+					"name": "addBinInfo",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "addBinInfo Unauthorized",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 654321,\n    \"country\": \"US\",\n    \"cost\": 15.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "addBinInfo Ok",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo FiveDigitsBin",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 12345,\n    \"country\": \"UY\",\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo SevenDigitsBin",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 1234567,\n    \"country\": \"UY\",\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo OneLetterCountry",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"U\",\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo MoreThanTwoLetterCountry",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UYY\",\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo NullCountry",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"cost\": 10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo NonPositiveCost",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": -10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo NullCost",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "addBinInfo FiveDigitsBinOneLetterCountryNonPositiveCost",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 12345,\n    \"country\": \"U\",\n    \"cost\": -10.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "listBinInfo",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "findBinInfo Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/all",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "findBinInfo Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/all",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"all"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "findBinInfoByBin",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "findBinInfoByBin Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/421821",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"421821"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin NotFound",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/111111",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"111111"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin FiveDigits",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/12345",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"12345"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin SevenDigits",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1234567",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1234567"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "findBinInfoByBin Ok",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/123456",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"123456"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin NotFound",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/111111",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"111111"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin FiveDigits",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/12345",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"12345"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "findBinInfoByBin SevenDigits",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1234567",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1234567"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "updateBinInfo",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "updateBinInfo Unauthorized",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "updateBinInfo Ok",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo NonPositiveId",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/-1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"-1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo FiveDigits",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 12345,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo SevenDigits",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 1234567,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo OneLetterCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"U\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo MoreThanTwoLetterCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UYY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo NullCountry",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo NonPositiveCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": -5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo NullCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateBinInfo FiveDigitsBinOneLetterCountryNonPositiveCost",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 12345,\n    \"country\": \"U\",\n    \"cost\": -5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "deleteBinInfo",
+					"item": [
+						{
+							"name": "API Key",
+							"item": [
+								{
+									"name": "deleteBinInfo Unauthorized",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "x-api-key",
+												"value": "{{api_key}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"bin\": 123456,\n    \"country\": \"UY\",\n    \"cost\": 5.0\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JWT",
+							"item": [
+								{
+									"name": "deleteBinInfo Ok",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteBinInfo NotFound",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/111111",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"111111"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteBinInfo NonPositiveId",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{bearer_token}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{etraveli_group_base_url}}/bin-info/-1",
+											"host": [
+												"{{etraveli_group_base_url}}"
+											],
+											"path": [
+												"bin-info",
+												"-1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
 						}
 					]
 				}
@@ -294,7 +1402,7 @@
 										],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"card_number\": 4218210123456789\n}",
+											"raw": "{\n    \"card_number\": 5255620123456789\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -965,7 +2073,7 @@
 									"response": []
 								},
 								{
-									"name": "updateCardCost NonPositive",
+									"name": "updateCardCost NonPositiveId",
 									"request": {
 										"method": "PUT",
 										"header": [
@@ -1305,7 +2413,7 @@
 									"response": []
 								},
 								{
-									"name": "deleteCardCost NonPositive",
+									"name": "deleteCardCost NonPositiveId",
 									"request": {
 										"method": "DELETE",
 										"header": [

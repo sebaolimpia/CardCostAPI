@@ -95,6 +95,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/payment-cards-cost/auth/**").permitAll()
                                 .requestMatchers("/payment-cards-cost/users/admin").hasRole("SUPER_ADMIN")
                                 .requestMatchers("/payment-cards-cost/users/all").hasAnyRole("SUPER_ADMIN", "ADMIN")
+                                .requestMatchers(antMatcher(POST, "/payment-cards-cost/bin-info")).hasRole("ADMIN")
                                 .requestMatchers(antMatcher(GET, "/payment-cards-cost/**")).hasAnyRole("SUPER_ADMIN", "ADMIN", "USER")
                                 .requestMatchers(antMatcher(POST, "/payment-cards-cost")).hasRole("ADMIN")
                                 .requestMatchers(antMatcher(PUT, "/payment-cards-cost/**")).hasRole("ADMIN")

@@ -1,11 +1,11 @@
 package etraveli.group.validation.validator;
 
-import etraveli.group.validation.annotation.DigitSizeValid;
+import etraveli.group.validation.annotation.DigitCardNumberSizeValid;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import java.math.BigInteger;
 
-public class DigitSizeValidator implements ConstraintValidator<DigitSizeValid, BigInteger> {
+public class DigitCardNumberSizeValidator implements ConstraintValidator<DigitCardNumberSizeValid, BigInteger> {
 
     @Override
     public boolean isValid(BigInteger value, ConstraintValidatorContext context) {

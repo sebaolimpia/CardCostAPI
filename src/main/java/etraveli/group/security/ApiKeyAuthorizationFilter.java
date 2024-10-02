@@ -38,10 +38,9 @@ public class ApiKeyAuthorizationFilter extends OncePerRequestFilter {
         String apiKey = request.getHeader(AUTHORIZATION_HEADER_API_KEY);
 
         if (internalApiKey.equals(apiKey)) {
+            // By default, the user is user_1 with the role ROLE_USER.
             ApiKeyAuthenticationToken authToken = new ApiKeyAuthenticationToken(
-                    "user_1",
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-            );
+                    "user_1", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
             getContext().setAuthentication(authToken);
         }
         filterChain.doFilter(request, response);

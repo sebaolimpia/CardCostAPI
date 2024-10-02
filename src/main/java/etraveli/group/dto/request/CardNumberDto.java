@@ -1,6 +1,6 @@
 package etraveli.group.dto.request;
 
-import etraveli.group.validation.annotation.DigitSizeValid;
+import etraveli.group.validation.annotation.DigitCardNumberSizeValid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +15,6 @@ import java.math.BigInteger;
 @Validated
 public class CardNumberDto {
 
-    @DigitSizeValid
+    @DigitCardNumberSizeValid
     private BigInteger cardNumber;
 }
