@@ -81,7 +81,7 @@ public class WebSecurityConfig {
     }
 
     /**
-     * Endpoints authorization configuration using JWT.
+     * Endpoints authorization configuration using JWT and API Key.
      *
      * @param http HttpSecurity object
      * @throws Exception Exception if any error occurs.
